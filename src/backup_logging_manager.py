@@ -720,37 +720,3 @@ class BackupManager:
                 'created_by': user[6]
             }
         return None
-
-
-if __name__ == "__main__":
-    # Test backup and logging system
-    from auth_manager import SessionManager
-    
-    # Create session and login as super admin
-    session = SessionManager()
-    login_result = session.auth.login("super_admin", "Admin_123?")
-    
-    if login_result['success']:
-        log_mgr = LogManager(session)
-        backup_mgr = BackupManager(session)
-        
-        # Test viewing logs
-        print("Testing log viewing...")
-        logs_result = log_mgr.view_logs(limit=10)
-        print(f"Logs result: {logs_result}")
-        
-        # Test backup creation
-        print("\nTesting backup creation...")
-        backup_result = backup_mgr.create_backup()
-        print(f"Backup result: {backup_result}")
-        
-        # Test generating restore code
-        if backup_result['success']:
-            print("\nTesting restore code generation...")
-            code_result = backup_mgr.generate_restore_code(
-                backup_result['data']['backup_filename'],
-                "super_admin"  # In real scenario, this would be a system admin
-            )
-            print(f"Restore code result: {code_result}")
-    else:
-        print("Failed to login for testing")

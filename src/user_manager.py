@@ -559,38 +559,3 @@ class UserManager:
         secrets.SystemRandom().shuffle(temp_password_list)
         
         return ''.join(temp_password_list)
-
-
-if __name__ == "__main__":
-    # Test user management (requires authentication)
-    from auth_manager import SessionManager
-    
-    # Create session and login as super admin
-    session = SessionManager()
-    login_result = session.auth.login("super_admin", "Admin_123?")
-    
-    if login_result['success']:
-        user_mgr = UserManager(session)
-        
-        # Test creating a system admin
-        print("Testing user creation...")
-        result = user_mgr.create_user(
-            username="test_admin",
-            password="TestPassword123!",
-            role="system_admin",
-            first_name="Test",
-            last_name="Administrator"
-        )
-        print(f"Create user result: {result}")
-        
-        # Test listing users
-        print("\nTesting user listing...")
-        users_result = user_mgr.list_users()
-        print(f"Users: {users_result}")
-        
-        # Test user search
-        print("\nTesting user search...")
-        search_result = user_mgr.search_users("admin")
-        print(f"Search result: {search_result}")
-    else:
-        print("Failed to login for testing")
