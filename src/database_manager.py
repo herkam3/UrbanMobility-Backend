@@ -19,7 +19,7 @@ class DatabaseManager:
 
     def _get_or_create_encryption_key(self):
         """Generate or retrieve encryption key for sensitive data"""
-        key_file = "encryption.key"
+        key_file = "data/encryption.key"
         if os.path.exists(key_file):
             with open(key_file, 'rb') as f:
                 return f.read()
