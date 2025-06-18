@@ -10,7 +10,7 @@ class UserManager:
         self.session = session_manager
         self.auth = session_manager.auth
         self.authz = session_manager.authz
-    
+      
     def create_user(self, username, password, role, first_name, last_name):
         """Create a new user (System Admin or Service Engineer)"""
         # Check permissions
