@@ -218,26 +218,34 @@ class ConsoleInterface:
         """Update user password"""
         self.clear_screen()
         print("=== UPDATE PASSWORD ===\n")
-
+        
         current_password = input("Current Password: ").strip()
         new_password = input("New Password: ").strip()
         confirm_password = input("Confirm New Password: ").strip()
-
+        
         if new_password != confirm_password:
             print("Passwords do not match.")
             input("Press Enter to continue...")
             return
-
-        # Fix: Add None check
+        
+        # Fix: Add None check and current password verification
         current_user = self.session.auth.get_current_user()
         if current_user and self.user_mgr:
             username = current_user['username']
-            result = self.user_mgr.update_user(
-                username, new_password=new_password)
+            
+            # Verify current password first
+            login_result = self.session.auth.login(username, current_password)
+            if not login_result['success']:
+                print("Current password is incorrect.")
+                input("Press Enter to continue...")
+                return
+            
+            # Update password
+            result = self.user_mgr.update_user(username, new_password=new_password)
             print(f"\n{result['message']}")
         else:
             print("Error: Session not properly initialized.")
-
+        
         input("Press Enter to continue...")
 
     def view_profile_menu(self):
